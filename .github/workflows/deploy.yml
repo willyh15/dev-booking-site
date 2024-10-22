@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Django CI/CD Pipeline
 
 on:
   push:
@@ -18,11 +18,17 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
+    - name: Install Django
       run: |
         python -m venv venv
         source venv/bin/activate
+        pip install django
         pip install -r requirements.txt
+
+    - name: Run Django Migrations
+      run: |
+        source venv/bin/activate
+        python manage.py migrate
 
     - name: Collect static files
       run: |
