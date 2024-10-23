@@ -5,12 +5,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'your-secret-key-here'
+SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['willyh15.github.io', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -54,7 +54,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'booking_system.wsgi.application'
 
 # Database
-# Using SQLite for simplicity, can change to Postgres/MySQL in production
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -87,8 +86,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Static root for GitHub Pages deployment
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # For static files like CSS/JS
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
