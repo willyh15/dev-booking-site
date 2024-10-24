@@ -1,0 +1,42 @@
+name: Deploy Django to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Triggers the workflow on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Run Django migrations
+        run: |
+          source venv/bin/activate
+          python manage.py migrate
+
+      - name: Collect static files
+        run: |
+          source venv/bin/activate
+          python manage.py collectstatic --noinput
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./staticfiles  # Points to the directory with collected static files
+          publish_branch: gh-pages  # Deploys to the gh-pages branch
